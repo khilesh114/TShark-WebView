@@ -12,7 +12,7 @@ TShark WebView is a web-based GUI for TShark, designed to simplify packet analys
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/TShark-WebView.git
+   https://github.com/khilesh114/TShark-WebView
     ```
 2. Navigate to the project directory:
     ```bash
@@ -20,11 +20,11 @@ TShark WebView is a web-based GUI for TShark, designed to simplify packet analys
     ```
 3. Install dependencies:
     ```bash
-    npm install
+    sudo apt install thsrk
     ```
 4. Start the application:
     ```bash
-    npm start
+    sudo python3 tshark.py
     ```
 
 ## Usage
@@ -39,10 +39,3 @@ Simply open your browser and navigate to `http://localhost:3000` to start captur
 
 [Watch the demo video](https://www.youtube.com/watch?v=your_demo_video_link)
 
-## Contributing
-
-Feel free to fork this project, submit issues, and make pull requests.
-
-## License
-
-This project is licensed under the MIT License.
