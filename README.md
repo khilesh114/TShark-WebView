@@ -44,5 +44,5 @@ Simply open your browser and navigate to `http://localhost:8080` to start captur
 
 ## Demo Video
 
-[Watch the demo video](https://www.youtube.com/watch?v=your_demo_video_link)
+[Watch the demo video](https://www.youtube.com/watch?v=9vz88H8fuhE)
 
