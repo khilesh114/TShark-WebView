@@ -1,21 +1,32 @@
 import subprocess
-import asyncio
-import websockets
+import sys
 
-async def capture_packets(websocket, path):
-    # Start tshark process to capture packets
+# Capture packets using TShark and save to a file
+with open('packets.txt', 'w') as f:
     process = subprocess.Popen(
-        ['tshark', '-i', 'eth0', '-T', 'fields', '-e', 'frame.number', '-e', 'frame.time', 
-         '-e', 'ip.src', '-e', 'ip.dst', '-e', 'frame.len', '-e', 'frame.protocols'],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True
+        ['tshark',  '-T', 'fields', '-e', 'frame.number', '-e', 'frame.time',
+         '-e', 'ip.src', '-e', 'ip.dst', '-e', 'udp.srcport', '-e', 'udp.dstport', '-e',
+         'tcp.srcport', '-e', 'tcp.dstport', '-e', 'frame.len', '-e', 'frame.protocols', '-e',
+         'dns.qry.name', '-e', 'dns.a', '-e', 'dns.ns'],
+        stdout=f, stderr=subprocess.PIPE, universal_newlines=True
     )
 
-    # Stream captured packets to the WebSocket
-    for line in process.stdout:
-        await websocket.send(line)
-
-# Start WebSocket server
-start_server = websockets.serve(capture_packets, "localhost", 8765)
-
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+    try:
+        # Wait for the process to complete
+        process.wait()
+        print("tshark is running")
+    except KeyboardInterrupt:
+        # Handle keyboard interrupt to stop the process
+        print("Interrupted by user. Stopping TShark...")
+        process.terminate()
+        process.wait()  # Ensure the process has terminated
+    except Exception as e:
+        # Handle other exceptions
+        print(f"An error occurred: {e}", file=sys.stderr)
+        process.terminate()
+        process.wait()  # Ensure the process has terminated
+    finally:
+        # Capture any stderr output if needed
+        stderr_output = process.stderr.read()
+        if stderr_output:
+            print(f"TShark Error: {stderr_output}", file=sys.stderr)
