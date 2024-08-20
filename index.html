@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TShark WebView</title>
+    <title>Hacker Style Packet Capture</title>
     <style>
         body {
             font-family: "Courier New", Courier, monospace;
@@ -80,7 +80,7 @@
 </head>
 <body>
 
-<h1>TShark WebView</h1>
+<h1>Hacker Style Real-Time Packet Capture</h1>
 
 <table>
     <thead>
@@ -99,6 +99,7 @@
         </tr>
     </thead>
     <tbody id="packet-table-body">
+        <!-- Packet data will be dynamically inserted here -->
     </tbody>
 </table>
 
@@ -123,20 +124,20 @@
             .then(response => response.text())
             .then(data => {
                 const packetTableBody = document.getElementById('packet-table-body');
-                packetTableBody.innerHTML = ''; 
+                packetTableBody.innerHTML = ''; // Clear the table body
 
                 const lines = data.trim().split('\n');
                 lines.forEach(line => {
                     const packetData = line.split('\t');
-                    if (packetData.length === 12) { 
+                    if (packetData.length === 13) {  // Adjusted for additional fields
                         const newRow = document.createElement('tr');
                         newRow.innerHTML = `
                             <td>${packetData[0]}</td>
                             <td>${packetData[1]}</td>
                             <td>${packetData[2]}</td>
-                            <td>${packetData[4] || packetData[6]}</td>  <!-- Source Port (UDP/TCP) -->
+                            <td>${packetData[4] || packetData[6]}</td>
                             <td>${packetData[3]}</td>
-                            <td>${packetData[5] || packetData[7]}</td>  <!-- Destination Port (UDP/TCP) -->
+                            <td>${packetData[5] || packetData[7]}</td>
                             <td>${packetData[8]}</td>
                             <td>${packetData[9]}</td>
                             <td>${packetData[10]}</td>
@@ -149,10 +150,7 @@
             });
     }
 
-    
     setInterval(fetchPacketData, 2000);
-
-    
     window.onload = generateMatrixEffect;
 </script>
 
