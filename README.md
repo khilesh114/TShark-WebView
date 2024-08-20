@@ -21,15 +21,21 @@ TShark WebView is a web-based GUI for TShark, designed to simplify packet analys
 3. Install dependencies:
     ```bash
     sudo apt install thsrk
+    sudo apt install php
     ```
 4. Start the application:
     ```bash
     sudo python3 tshark.py
     ```
+5. open Your second tab terminal and run
+   ```bash
+    cd path/to/TShark-WebView
 
+    ```
+   
 ## Usage
 
-Simply open your browser and navigate to `http://localhost:3000` to start capturing and analyzing network packets.
+Simply open your browser and navigate to `http://localhost:8080` to start capturing and analyzing network packets.
 
 ## Screenshots
 
