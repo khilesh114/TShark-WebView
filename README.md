@@ -40,7 +40,7 @@ Simply open your browser and navigate to `http://localhost:8080` to start captur
 
 ## Screenshots
 
-![TShark WebView Screenshot](images/screenshot.png)
+![TShark WebView Screenshot](screenshort.png)
 
 ## Demo Video
 
