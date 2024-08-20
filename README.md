@@ -30,6 +30,7 @@ TShark WebView is a web-based GUI for TShark, designed to simplify packet analys
 5. open Your second tab terminal and run
    ```bash
     cd path/to/TShark-WebView
+    php -S localhost:8080
 
     ```
    
