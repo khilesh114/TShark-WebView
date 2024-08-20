@@ -20,7 +20,7 @@ TShark WebView is a web-based GUI for TShark, designed to simplify packet analys
     ```
 3. Install dependencies:
     ```bash
-    sudo apt install thsrk
+    sudo apt install tshark
     sudo apt install php
     ```
 4. Start the application:
