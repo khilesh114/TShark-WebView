@@ -12,9 +12,10 @@ with open('packets.txt', 'w') as f:
     )
 
     try:
+        print("tshark is running")
         # Wait for the process to complete
         process.wait()
-        print("tshark is running")
+        
     except KeyboardInterrupt:
         # Handle keyboard interrupt to stop the process
         print("Interrupted by user. Stopping TShark...")
