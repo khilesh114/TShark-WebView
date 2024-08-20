@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TShark WebView</title>
+    <style>
+        body {
+            font-family: "Courier New", Courier, monospace;
+            background-color: #000;
+            color: #00FF00;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            color: #00FF00;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #00FF00;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: rgba(0, 0, 0, 0.8);
+            margin-top: 20px;
+            color: #00FF00;
+        }
+
+        table, th, td {
+            border: 1px solid #00FF00;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            font-size: 1em;
+        }
+
+        th {
+            background-color: #003300;
+            text-shadow: 0 0 10px #00FF00;
+        }
+
+        td {
+            background-color: #001100;
+        }
+
+        @keyframes matrix {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-100%);
+            }
+        }
+
+        .matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            background: black;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .matrix div {
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0, 255, 0, 1), rgba(0, 255, 0, 0));
+            animation: matrix 5s infinite linear;
+        }
+    </style>
+</head>
+<body>
+
+<h1>TShark WebView</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Time</th>
+            <th>Source IP</th>
+            <th>Source Port</th>
+            <th>Destination IP</th>
+            <th>Destination Port</th>
+            <th>Length</th>
+            <th>Protocols</th>
+            <th>DNS Query Name</th>
+            <th>DNS A Record</th>
+            <th>DNS PTR Record</th>
+        </tr>
+    </thead>
+    <tbody id="packet-table-body">
+    </tbody>
+</table>
+
+<div class="matrix"></div>
+
+<script>
+    function generateMatrixEffect() {
+        const matrixContainer = document.querySelector('.matrix');
+        const columns = Math.floor(window.innerWidth / 20);
+
+        for (let i = 0; i < columns; i++) {
+            const div = document.createElement('div');
+            div.style.left = `${i * 20}px`;
+            div.style.animationDuration = `${Math.random() * 5 + 5}s`;
+            div.style.animationDelay = `${Math.random() * 5}s`;
+            matrixContainer.appendChild(div);
+        }
+    }
+
+    function fetchPacketData() {
+        fetch('packets.txt')
+            .then(response => response.text())
+            .then(data => {
+                const packetTableBody = document.getElementById('packet-table-body');
+                packetTableBody.innerHTML = ''; 
+
+                const lines = data.trim().split('\n');
+                lines.forEach(line => {
+                    const packetData = line.split('\t');
+                    if (packetData.length === 12) { 
+                        const newRow = document.createElement('tr');
+                        newRow.innerHTML = `
+                            <td>${packetData[0]}</td>
+                            <td>${packetData[1]}</td>
+                            <td>${packetData[2]}</td>
+                            <td>${packetData[4] || packetData[6]}</td>  <!-- Source Port (UDP/TCP) -->
+                            <td>${packetData[3]}</td>
+                            <td>${packetData[5] || packetData[7]}</td>  <!-- Destination Port (UDP/TCP) -->
+                            <td>${packetData[8]}</td>
+                            <td>${packetData[9]}</td>
+                            <td>${packetData[10]}</td>
+                            <td>${packetData[11]}</td>
+                            <td>${packetData[12]}</td>
+                        `;
+                        packetTableBody.appendChild(newRow);
+                    }
+                });
+            });
+    }
+
+    
+    setInterval(fetchPacketData, 2000);
+
+    
+    window.onload = generateMatrixEffect;
+</script>
+
+</body>
+</html>
